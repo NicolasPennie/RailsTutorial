@@ -10,4 +10,5 @@ Minitest.extensions.unshift('rails')
 class ActiveSupport::TestCase
   fixtures :all
   include ApplicationHelper
+  include SessionsHelper
 end
