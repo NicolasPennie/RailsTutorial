@@ -13,6 +13,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "title", full_title("Sign up")
   end
   
+  test "should get index" do
+    log_in_as(@user)
+    get users_path
+    assert_response :success
+    assert_select "title", full_title("All users")
+  end
+  
   test "should redirect edit when not logged in" do
     get edit_user_path(@user)
     assert_not flash.empty?
@@ -50,5 +57,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert session[:forwarding_url].nil?
     assert_redirected_to user_path(@user), 
       "assert not redirected back after second login"
+  end
+  
+  test "should redirect index when not logged in" do
+    get users_path
+    assert_redirected_to login_url
   end
 end
