@@ -18,7 +18,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get users_path
     assert_response :success
     assert_select "title", full_title("All users")
-  end
+   end
   
   test "should redirect edit when not logged in" do
     get edit_user_path(@user)
