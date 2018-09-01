@@ -74,4 +74,29 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
                                             } }
     assert_not @other_user.reload.admin?
   end
+  
+  test "should not allow delete when not logged in" do
+    assert_no_difference 'User.count', "User should not be deleted" do 
+      delete user_path(@other_user)
+    end
+    assert_redirected_to login_url
+  end
+  
+  test "should not allow delete for non-admin" do
+    log_in_as(@other_user)
+    assert_not @other_user.admin?
+    assert_no_difference 'User.count', "User should not be deleted" do 
+      delete user_path(@user)
+    end
+    assert_redirected_to root_url
+  end
+  
+  test "successful destroy" do
+    log_in_as(@user)
+    get users_path
+    assert_difference 'User.count', -1, "User should not be deleted" do 
+      delete user_path(@other_user)
+    end
+    assert_redirected_to users_path
+  end
 end
