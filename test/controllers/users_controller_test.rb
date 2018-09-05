@@ -99,4 +99,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to users_path
   end
+  
+  test "find invalid user" do
+    get edit_user_path(id: (User.count + 1))
+    assert_redirected_to root_url
+    assert_not flash.empty?
+  end
 end

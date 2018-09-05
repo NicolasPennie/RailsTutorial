@@ -15,9 +15,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+      UserMailer.account_activation(@user).deliver_now
+      flash[:info] = "Please check your email to activate your account."
+      redirect_to root_url
     else
       render 'new'
     end
@@ -50,7 +50,12 @@ class UsersController < ApplicationController
   private
   
     def user_find
-      @user = User.find(params[:id])
+      begin
+        @user = User.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        flash[:danger] = "Sorry, that user does not exist."
+        redirect_to root_url
+      end
     end
 
     def user_params

@@ -4,6 +4,7 @@ class UserLoginTest < ActionDispatch::IntegrationTest
   
   def setup 
     @user = users(:michael)
+    @notactivated_user = users(:notactivated_user)
   end
   
   test "invalid login" do
@@ -55,5 +56,11 @@ class UserLoginTest < ActionDispatch::IntegrationTest
     log_in_as(@user, remember_me: '1')
     log_in_as(@user, remember_me: '0')
     assert_empty cookies['remember_token']
+  end
+  
+  test "login without activation" do
+    log_in_as(@notactivated_user)
+    assert_not is_logged_in?
+    assert_redirected_to root_url
   end
 end
