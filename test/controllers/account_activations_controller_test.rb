@@ -23,7 +23,7 @@ class AccountActivationsControllerTest < ActionDispatch::IntegrationTest
     assert_not flash[:danger].empty?
   end
   
-  test "valid activation token" do
+  test "valid activation token; valid email" do
     user = @notactivated_user
     get edit_account_activation_path(user.activation_token, email: user.email)
     assert user.reload.activated?

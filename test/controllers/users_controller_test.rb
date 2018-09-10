@@ -5,6 +5,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
     @other_user = users(:archer)
+    @notactivated_user = users(:notactivated_user)
   end
   
   test "should get new" do
@@ -100,9 +101,28 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to users_path
   end
   
-  test "find invalid user" do
-    get edit_user_path(id: (User.count + 1))
+  test "should not find invalid user" do
+    invalid_id = User.count + 1
+    # show
+    get user_path(id: invalid_id)
     assert_redirected_to root_url
     assert_not flash.empty?
+    # edit
+    get edit_user_path(id: invalid_id)
+    assert_redirected_to root_url
+    assert_not flash.empty?
+    # update
+    patch user_path(id: invalid_id)
+    assert_redirected_to root_url
+    assert_not flash.empty?
+    # destroy 
+    delete user_path(id: invalid_id)
+    assert_redirected_to root_url
+    assert_not flash.empty?
+  end
+  
+  test "should not find unactivated user" do
+    get user_path(@notactivated_user)
+    assert_redirected_to root_url
   end
 end
