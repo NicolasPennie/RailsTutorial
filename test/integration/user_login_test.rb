@@ -29,6 +29,12 @@ class UserLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", user_path(@user)
   end
   
+  test "redirect home if already logged in" do
+    log_in_as(@user)
+    get login_path
+    assert_redirected_to root_url
+  end
+  
   test "logout and redirect to home" do
     log_in_as(@user)
     delete logout_path
