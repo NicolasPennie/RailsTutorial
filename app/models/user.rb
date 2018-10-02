@@ -73,6 +73,10 @@ class User < ApplicationRecord
     link_age > RESET_EXPIRY_AGE
   end
   
+  def feed
+    Micropost.where("user_id = ?", id)
+  end
+  
   private
 
     def email_downcase
