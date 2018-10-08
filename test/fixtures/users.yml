@@ -19,6 +19,13 @@ notactivated_user:
   email: notactivated@example.com
   password_digest: <%= User.digest('password') %>
   activated: false
+  
+nopost_user:
+  name: Non Posterino
+  email: nonposterino@example.com
+  password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 <% 30.times do |n| %>
 user_<%= n %>:
