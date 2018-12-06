@@ -49,6 +49,14 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
   
+  def follow
+  
+  end
+  
+  def unfollow
+    
+  end
+  
   private
   
     def user_find
